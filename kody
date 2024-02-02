@@ -1,0 +1,170 @@
+
+# wyostrzanie
+import cv2
+import numpy as np
+
+def sharpen_image(image):
+    kernel = np.array([[0, -1, 0],
+                       [-1, 5, -1],
+                       [0, -1, 0]])  # Filtr Laplace'a do wyostrzania
+
+    sharpened_image = cv2.filter2D(image, -1, kernel)
+    return sharpened_image
+
+
+original_image = cv2.imread(r"C:\Users\olawe\OneDrive\Obrazy\image1.jpg")
+
+# funkcja do wyostrzania
+sharpened_image = sharpen_image(original_image)
+
+
+cv2.imshow("Original Image", original_image)
+cv2.imshow("Sharpened Image", sharpened_image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+# rozmycie uśredniające
+import cv2
+
+def uśredniające_rozmycie(image, kernel_size):
+    blurred_image = cv2.blur(image, (kernel_size, kernel_size))
+    return blurred_image
+
+original_image = cv2.imread(r"C:\Users\olawe\OneDrive\Obrazy\image1.jpg")
+
+# Rozmycie z różnymi rozmiarami filtrów
+blurred_image_3x3 = uśredniające_rozmycie(original_image, 3)
+blurred_image_9x9 = uśredniające_rozmycie(original_image, 9)
+
+
+cv2.imshow("Original Image", original_image)
+cv2.imshow("Blurred Image 3x3", blurred_image_3x3)
+cv2.imshow("Blurred Image 9x9", blurred_image_9x9)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+#rozmycie gaussowskie
+import cv2
+import numpy as np
+
+def gaussowskie_rozmycie(image):
+    gaussian_blurred_image = cv2.GaussianBlur(image, (3, 3), 0)
+    return gaussian_blurred_image
+
+
+original_image = cv2.imread(r"C:\Users\olawe\OneDrive\Obrazy\kot.jpg")
+
+blurred_image_gaussian = gaussowskie_rozmycie(original_image)
+
+
+cv2.imshow("Original Image", original_image)
+cv2.imshow("Gaussian Blurred Image", blurred_image_gaussian)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+#rozmycie gaussowskie 5x5
+import cv2
+import numpy as np
+
+def gaussowskie_rozmycie(image, kernel_size):
+    blurred_image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
+    return blurred_image
+
+original_image = cv2.imread(r"C:\Users\olawe\OneDrive\Obrazy\image1.jpg")
+
+# Rozmycie gaussowskie z rozmiarem jądra (5x5)
+kernel_size = 5
+blurred_image_5x5 = gaussowskie_rozmycie(original_image, kernel_size)
+
+cv2.imshow("Original Image", original_image)
+cv2.imshow("Blurred Image (Gaussian 5x5)", blurred_image_5x5)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+#wykrywanie krawędzi za pomocą operatora Sobela, wykrywanie krawędzi za pomocą operatora Laplace'a
+
+import cv2
+import numpy as np
+
+def sobel_edge_detection(image):
+    sobel_x = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=3)
+    sobel_y = cv2.Sobel(image, cv2.CV_64F, 0, 1, ksize=3)
+    edges_sobel = np.sqrt(sobel_x**2 + sobel_y**2)
+    edges_sobel = np.uint8(edges_sobel)
+    return edges_sobel
+
+def laplace_edge_detection(image):
+    laplace_kernel = np.array([[0, 1, 0],
+                               [1, -4, 1],
+                               [0, 1, 0]])
+    edges_laplace = cv2.filter2D(image, cv2.CV_64F, laplace_kernel)
+    edges_laplace = np.uint8(np.abs(edges_laplace))
+    return edges_laplace
+
+
+
+original_image = cv2.imread(r"C:\Users\olawe\OneDrive\Obrazy\kot.jpg", cv2.IMREAD_GRAYSCALE)
+
+edges_sobel = sobel_edge_detection(original_image)
+edges_laplace = laplace_edge_detection(original_image)
+
+
+cv2.imshow("Original Image", original_image)
+cv2.imshow("Edges (Sobel)", edges_sobel)
+cv2.imshow("Edges (Laplace)", edges_laplace)
+
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+#operator scharra
+
+import cv2
+import numpy as np
+
+def scharra_edge_detection(image):
+    scharra_horizontal = np.array([[3, 0, -3],
+                                   [10, 0, -10],
+                                   [3, 0, -3]])
+
+    scharra_vertical = np.array([[3, 10, 3],
+                                 [0, 0, 0],
+                                 [-3, -10, -3]])
+
+    edges_scharra_horizontal = cv2.filter2D(image, cv2.CV_64F, scharra_horizontal)
+    edges_scharra_vertical = cv2.filter2D(image, cv2.CV_64F, scharra_vertical)
+
+    edges_scharra = np.sqrt(edges_scharra_horizontal**2 + edges_scharra_vertical**2)
+    edges_scharra = np.uint8(edges_scharra)
+
+    return edges_scharra
+
+# Wczytaj obraz
+original_image = cv2.imread(r"C:\Users\olawe\OneDrive\Obrazy\kot.jpg", cv2.IMREAD_GRAYSCALE)
+
+# Wywołaj funkcję do detekcji krawędzi za pomocą operatora Scharra
+edges_scharra = scharra_edge_detection(original_image)
+
+# Wyświetl obrazy
+cv2.imshow("Original Image", original_image)
+cv2.imshow("Edges (Scharra)", edges_scharra)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
